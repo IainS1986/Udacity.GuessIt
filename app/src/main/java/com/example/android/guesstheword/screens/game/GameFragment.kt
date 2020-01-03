@@ -61,6 +61,12 @@ class GameFragment : Fragment() {
             binding.wordText.text = newWord
         })
 
+        viewModel.eventGameFinish.observe(this, Observer { didFinish ->
+            if (didFinish) {
+                gameFinished()
+            }
+        })
+
         binding.correctButton.setOnClickListener {
             viewModel.onCorrect()
         }
@@ -79,5 +85,7 @@ class GameFragment : Fragment() {
     private fun gameFinished() {
         val action = GameFragmentDirections.actionGameToScore(viewModel.score.value ?: 0)
         findNavController(this).navigate(action)
+
+        viewModel.onGameFinishComplete()
     }
 }
